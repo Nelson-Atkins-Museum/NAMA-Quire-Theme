@@ -1,0 +1,16 @@
+{{/*
+  This provides chronological navigation for the Nelson-Atkins Catalogue
+*/}}
+{{ $pages := where .Site.Pages ".Params.timeline" true }}
+<div class="quire-contents-buttons nama-section-timeline remove-from-epub">
+  <h2>Catalogue Timeline</h2>
+  <ul>
+    {{ $pageTitle := .Title }}
+    {{ range $pages }}
+      {{ $btnClass := cond (eq .Title $pageTitle) "prev" "next" }}
+      <li class="quire-nav-button {{ $btnClass }}">
+        <a href="{{ .Permalink }}">{{ .Title  }}</a>
+      </li>
+    {{ end }}   
+  </ul>
+</div>

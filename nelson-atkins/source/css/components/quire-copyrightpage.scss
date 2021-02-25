@@ -1,0 +1,18 @@
+// =============================================================================
+// Quire-copyrightpage.scss
+// -----------------------------------------------------------------------------
+// Copyright page specific styles (catalogue-style page with smaller font and
+// less line spacing). The main text content area of this page uses the .quire-page
+// class and sub-classes, but elements specific to this layout use .quire-entry
+// instead.
+
+// .quire-copyrightpage
+// -----------------------------------------------------------------------------
+.quire-copyrightpage {
+
+  font-family: $quire-footnotes-font;
+  font-size: .875rem;
+  line-height: 1.6;
+  padding-top: 1px;
+
+}

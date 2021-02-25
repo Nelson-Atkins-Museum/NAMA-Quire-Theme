@@ -1,0 +1,90 @@
+{{/*
+
+  This shortcode generates an html dropdown for each section of an entry page.
+  It will automatically add in citation dropdowns and footnotes to the entry and
+  conservation paragraph.
+
+  This shortcode requires a set "section" value to determine the title of the
+  dropdown.
+
+*/}}
+{{ if eq (.Get "section") "entry" }}
+  <details>
+    <summary>Catalogue Entry</summary>
+    <details><summary>Citation</summary>
+      <b>Chicago:</b>
+        <br/>
+        <br/>
+        Richard Rand, "François Boucher, *Landscape with a Water Mill*, 1740," catalogue entry, January 2015, in *French Paintings, 1600s–1900s: The Collections of The Nelson-Atkins Museum of Art*, ed. Aimee Marcereau DeGalan (Kansas City, MO: Nelson-Atkins Museum of Art, 2020), doi: 10.xxxx/xxx-xxx.
+        <br/>
+        <br/>
+      <b>MLA:</b>
+        <br/>
+        <br/>
+        Rand, Richard. "François Boucher, *Landscape with a Water Mill*, 1740," catalogue entry, January 2015, *French Paintings, 1600s–1900s: The Collections of The Nelson-Atkins Museum of Art*. ed. Aimee Marcereau DeGalan. Nelson-Atkins Museum of Art, 2020. doi: 10.xxxx/xxx-xxx.
+  </details>
+
+    {{ .Inner }}
+    {{ partial "page-bibliography.html" . }}
+
+  </details>
+  <br/>
+{{ end }}
+{{ if eq (.Get "section") "conservation" }}
+<details>
+  <summary>Conservation Technical Notes</summary>
+  <details><summary>Citation</summary>
+    <b>Chicago:</b>
+      <br/>
+      <br/>
+      Richard Rand, "François Boucher, *Landscape with a Water Mill*, 1740," catalogue entry, January 2015, in *French Paintings, 1600s–1900s: The Collections of The Nelson-Atkins Museum of Art*, ed. Aimee Marcereau DeGalan (Kansas City, MO: Nelson-Atkins Museum of Art, 2020), doi: 10.xxxx/xxx-xxx.
+      <br/>
+      <br/>
+    <b>MLA:</b>
+      <br/>
+      <br/>
+      Rand, Richard. "François Boucher, *Landscape with a Water Mill*, 1740," catalogue entry, January 2015, *French Paintings, 1600s–1900s: The Collections of The Nelson-Atkins Museum of Art*. ed. Aimee Marcereau DeGalan. Nelson-Atkins Museum of Art, 2020. doi: 10.xxxx/xxx-xxx.
+</details>
+
+  {{ .Inner }}
+  {{- partial "page-bibliography.html" . -}}
+
+</details>
+<br/>
+{{ end }}
+{{ if eq (.Get "section") "provenance" }}
+<details>
+  <summary>Provenance</summary>
+
+  {{ .Inner | markdownify }}
+
+</details>
+<br/>
+{{ end }}
+{{ if eq (.Get "section") "related" }}
+<details>
+  <summary>Related Works</summary>
+
+  {{ .Inner | markdownify }}
+
+</details>
+<br/>
+{{ end }}
+{{ if eq (.Get "section") "exhibition" }}
+<details>
+  <summary>Exhibitions</summary>
+
+  {{ .Inner | markdownify }}
+
+</details>
+<br/>
+{{ end }}
+{{ if eq (.Get "section") "references" }}
+<details>
+  <summary>References</summary>
+
+  {{ .Inner | markdownify }}
+
+</details>
+<br/>
+{{ end }}

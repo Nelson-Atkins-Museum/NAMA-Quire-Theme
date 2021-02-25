@@ -1,0 +1,211 @@
+{{- $imgPath := printf "%s/%s" .imageDir .figure.src -}}
+
+<figure data-media-type="{{ .figure.media_type }}" data-dualview-idx="{{ .dualViewIdx }}" data-figure="{{ .figure.id }}">
+
+    {{ if or (eq .site.Site.Params.pdf true) (eq .site.Site.Params.epub true) }}
+
+        <div class="quire-figure__media-fallback">
+            {{ if isset .map "src" }}
+
+                {{ if .map.src }}
+                    <div class="quire-figure__wrapper">
+                        <img src='{{ printf "%s/%s" (.site.Scratch.Get "imageDir") .map.src | relURL }}' />
+                    </div>
+                {{ end }}
+
+            {{ else }}
+                {{ if isset .map "media_type" }}
+                    <div class="placeholder">
+                        {{- if or (eq .map.media_type "youtube")  (eq .map.media_type "vimeo") }}
+
+                            {{ if eq .site.Site.Params.pdf true }}
+                                <i class="material-icons md-24">videocam</i>
+                            {{ else }}
+                                <img src='{{ .site.Scratch.Get "imageDir" | relURL }}/icons/baseline-videocam-24px.png' />
+                            {{ end }}
+                        {{ end }}
+
+                        {{- if or (eq .map.media_type "soundcloud")  (eq .map.media_type "audio") }}
+
+                            {{ if eq .site.Site.Params.pdf true }}
+                                <i class="material-icons md-24 audio">headset</i>
+                            {{ else }}
+                                <img src='{{ .site.Scratch.Get "imageDir" | relURL }}/icons/baseline-headset-24px.png' />
+                            {{ end }}
+                        {{ end }}
+                    </div>
+                {{ end }}
+            {{- end -}}
+
+            {{ if isset .map "title" }}
+                {{ if .map.title }}
+                    <h5 class="header">
+                        {{ .map.title | markdownify }}
+                    </h5>
+                {{ end }}
+            {{ end }}
+
+            {{ if isset .map "media_type" }}
+
+                <p class="caption">
+
+                    {{- if eq .map.media_type "youtube" }}
+                        <a 
+                            href='https://youtu.be/{{ .map.media_id }}' 
+                            alt="" 
+                            title=""
+                            target="_blank"
+                        >
+                            <em>https://youtu.be/{{ .map.media_id }}</em>
+                        </a>
+                    {{ end }}
+
+                    {{- if eq .map.media_type "vimeo" }}
+                        <a 
+                            href='https://vimeo.com/{{ .map.media_id }}' 
+                            alt="" 
+                            title=""
+                            target="_blank">
+                                <em>https://vimeo.com/{{ .map.media_id }}</em>
+                        </a>
+                    {{ end }}
+                    
+                    {{- if eq .map.media_type "soundcloud" }}
+                        <a 
+                            href="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/{{ .map.media_id }}"
+                            alt="" 
+                            title=""
+                            target="_blank">
+                                <em>https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/{{ .map.media_id }}</em>
+                        </a>
+                    {{ end }}
+                </p>
+            {{ end }}
+        </div>
+    {{ else }}
+
+        {{ if eq .zoom true }}
+
+            {{ if eq .figure.media_type "iiif" }}
+
+                <div id="js-iiif-{{ now.UnixNano }}" class="quire-deepzoom-entry inset" aria-live="polite" role="application"
+                    aria-label="Zoomable image" data-catalogue-entry="true" {{ if .figure.iiif }} data-iiif="{{ .figure.iiif }}"
+                    {{ end }} {{ if .figure.zoom_level }} data-zoom="{{ .figure.zoom_level }}" {{ end }} {{ if .figure.caption }}
+                    data-caption='{{ .figure.caption | markdownify | safeHTML }}' {{ end }}>
+                </div>
+
+            {{ else if eq .figure.media_type "map" }}
+
+                <div id="js-map-{{ now.UnixNano }}" class="quire-map-entry inset" aria-live="polite" aria-label="Zoomable map"
+                    data-catalogue-entry="true" {{ if .figure.lat }} data-lat="{{ .figure.lat }}" {{ end }} {{ if .figure.long }}
+                    data-long="{{ .figure.long }}" {{ end }} {{ if .figure.geojson }}
+                    data-geojson="{{ .Site.BaseURL }}{{ .figure.geojson }}" {{ end }} {{ if .figure.caption }}
+                    data-caption='{{ .figure.caption | markdownify | safeHTML }}' {{ end }}>
+                </div>
+
+            {{ else if eq .figure.media_type "youtube" }}
+
+                <iframe id='{{ .id }}' title='{{ if .figure.title }}{{ .figure.title | markdownify }}{{ end }}'
+                    alt='{{ if .figure.title }}{{ .figure.title | markdownify }}{{ end }}' {{ if .figure.caption }}
+                    data-caption='{{ .figure.caption | markdownify | safeHTML }}' {{ end }} data-catalogue-entry="true"
+                    aria-label="youtube video" class='quire-figure__media'
+                    src='https://www.youtube-nocookie.com/embed/{{ .figure.media_id }}?rel=0&amp;showinfo=0' frameborder='0'
+                    webkitallowfullscreen mozallowfullscreen allowfullscreen>
+                </iframe>
+
+            {{ else if eq .figure.media_type "vimeo" }}
+
+                <iframe id='{{ .id }}' title='{{ if .figure.title }}{{ .figure.title | markdownify }}{{ end }}'
+                    alt='{{ if .figure.title }}{{ .figure.title | markdownify }}{{ end }}' {{ if .figure.caption }}
+                    data-caption='{{ .figure.caption | markdownify | safeHTML }}' {{ end }} data-catalogue-entry="true"
+                    aria-label="vimeo video" class='quire-figure__media' src='https://player.vimeo.com/video/{{ .figure.media_id }}'
+                    frameborder='0' webkitallowfullscreen mozallowfullscreen allowfullscreen>
+                </iframe>
+
+            {{ else }}
+
+                <div id="js-deepzoom-{{ now.UnixNano }}" class="quire-deepzoom-entry inset" {{ if .figure.caption }}
+                    data-caption='{{ .figure.caption | markdownify | safeHTML }}' {{ end }} alt="{{ .figure.alt }}"
+                    aria-live="polite" role="application" aria-label="Zoomable image" data-catalogue-entry="true"
+                    src="{{ $imgPath | relURL }}">
+                </div>
+                <img style="display: none" src="{{ $imgPath | relURL }}" alt="{{ .figure.alt }}" />
+
+            {{ end }}
+
+        {{ else }}
+
+            {{ if eq .figure.media_type "youtube" }}
+
+                <iframe id='{{ .id }}' title='{{ if .figure.title }}{{ .figure.title | markdownify }}{{ end }}'
+                    alt='{{ if .figure.title }}{{ .figure.title | markdownify }}{{ end }}' {{ if .figure.caption }}
+                    data-caption='{{ .figure.caption | markdownify | safeHTML }}' {{ end }} data-catalogue-entry="true"
+                    aria-label="youtube video" class='quire-figure__media'
+                    src='https://www.youtube-nocookie.com/embed/{{ .figure.media_id }}?rel=0&amp;showinfo=0' frameborder='0'
+                    webkitallowfullscreen mozallowfullscreen allowfullscreen>
+                </iframe>
+
+            {{ else if eq .figure.media_type "vimeo" }}
+
+                <iframe id='{{ .id }}' title='{{ if .figure.title }}{{ .figure.title | markdownify }}{{ end }}'
+                    alt='{{ if .figure.title }}{{ .figure.title | markdownify }}{{ end }}' {{ if .figure.caption }}
+                    data-caption='{{ .figure.caption | markdownify | safeHTML }}' {{ end }} data-catalogue-entry="true"
+                    aria-label="vimeo video" class='quire-figure__media' src='https://player.vimeo.com/video/{{ .figure.media_id }}'
+                    frameborder='0' webkitallowfullscreen mozallowfullscreen allowfullscreen>
+                </iframe>
+
+            {{ else }}
+
+                <img src="{{ $imgPath | relURL }}" alt="{{ .figure.alt }}" />
+
+            {{ end }}
+
+        {{ end }}
+
+        {{ if or .figure.caption .figure.credit }}
+            <div class="quire-image-control quire-image-info">
+                <span class="quire-image-info__wrap">
+                    {{ with .figure.caption }}<span class="quire-image-info__caption">{{ . | markdownify }}</span>{{ end }}
+                    {{ with .figure.credit }}<span class="quire-image-info__credit">{{ .| markdownify }}</span>{{ end }}
+                </span>
+            </div>
+        {{ end }}
+
+        <div class="quire-image-counter-download-container">
+            {{ if eq .figure.download true }}
+                <a href="{{ $imgPath | relURL }}" target="_blank"
+                    class="remove-from-epub quire-image-control quire-image-control--download" title="Download image" download>
+                    {{- partial "icon.html" (dict "type" "download" "description" "Download image") -}}
+                </a>
+            {{ end }}
+        </div>
+        <div class="na-image-controls">
+            <div class="na-image-caption-toggle na-image-control toggled">
+                <span class="na-tooltip">Toggle Caption</span>
+            </div>
+            {{/*  <div class="na-image-menu na-image-control">
+                <span class="na-tooltip">Select Figure</span>
+                <div class="na-image-menu__icon na-image-control"></div>
+                <div class="na-image-menu__menu">
+                    {{ range .object }}
+                        {{ if .id }}
+                            {{ range where site.Site.Data.objects.object_list "id" "eq" .id }}
+                                {{ range $idx, $figure := .figure }}
+                                    {{ range where site.Site.Data.figures.figure_list "id" "eq" $figure.id }}
+                                        {{ if .caption }}
+                                            <div data-idx={{ $idx }} class="na-image-menu__menu-option"><span>{{ htmlUnescape .caption }}</span></div>
+                                        {{ end }}
+                                    {{ end }}
+                                {{ end }}
+                            {{ end}}
+                        {{ end }}
+                    {{ end }}
+                </div>
+            </div>              */}}
+            <div class="na-dualview-toggle na-image-control dualview-toggle-{{ .dualViewIdx }}">
+                <span class="na-tooltip">Toggle Dual View</span>
+            </div>
+        </div>
+    {{ end }}
+
+</figure>

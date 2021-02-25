@@ -1,0 +1,88 @@
+  <section class="quire-entry__tombstone">
+    <div class="container">
+        {{/* Entry tombstone data */}}
+        {{ range .Params.object }}
+          {{ if .id }}
+          {{ $.Scratch.Set "id" .id }}
+          {{ range where $.Site.Data.objects.object_list "id" "eq" .id }}
+          <table class="table is-fullwidth">
+          <caption>
+            {{ if .link }}
+            <a href="{{ .link }}" target="_blank" class="button">{{ $.Site.Params.entryPageObjectLinkText }} {{- partial "icon.html" (dict "type" "pdf" "description" "") -}}</a>
+            {{ end }}
+
+            {{ if ne .share false }}
+                <div id="na-overlay" onclick="off()">
+                  <div id="na-overlay-text" >
+                    <div id="na-overlay-text-box">
+                      <h2>Share</h2>
+                      <hr/>
+                      <!--E-Mail-->{{- partial "icon.html" (dict "type" "email" "" "" ) -}} <a href="mailto:?subject={{ $.Title | markdownify }}&body=French Paintings and Pastels, 1600–1945: The Collections of The Nelson-Atkins Museum of Art-{{ $.Title | markdownify }}{{ $.Permalink | markdownify }}" target="_self" rel="noopener">Share by E-Mail </a>
+                      <br/>
+                      <br/>
+                      <!--Copy Link-->{{- partial "icon.html" (dict "type" "link" "" "" ) -}}  <a onclick="myFunction()" >Click to Copy Link</a>
+                      <!--Link to Copy--> <input type="text" value="{{ $.Permalink | markdownify }}" id="clickToCopy">
+                    </div>
+                  </div>
+                </div>
+                <a target="_blank" class="button" onclick="on()">Share{{- partial "icon.html" (dict "type" "share" "description" "") -}}</a>
+                <script>
+                  function on() {
+                  document.getElementById("na-overlay").style.display = "block";
+                  }
+
+                  function off() {
+                  document.getElementById("na-overlay").style.display = "none";
+                  }
+
+                  function myFunction() {
+  /* Get the text field */
+  var copyText = document.getElementById("clickToCopy");
+
+  /* Select the text field */
+  copyText.select();
+  copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+
+  /* Copy the text inside the text field */
+  document.execCommand("copy");
+
+  /* Alert the copied text */
+  alert("Copied the text: " + copyText.value);
+}
+                </script>
+            {{ end }}
+            {{ if .doi }}
+            <p class="doi" id="tomb" >doi: {{ .doi }}</p>
+            {{ end }}
+          {{ end }}
+        {{ else }}
+        {{ end }}
+        </caption>
+        <tbody>
+        {{ if .id }}
+          {{ $.Scratch.Set "id" .id }}
+          {{ range $.Site.Data.objects.object_display_order }}
+            {{ $.Scratch.Set "key" . }}
+            {{ range where $.Site.Data.objects.object_list "id" "eq" ($.Scratch.Get "id") }}
+              {{ range $key, $value := . }}
+              {{ if and (eq $key ($.Scratch.Get "key")) (ne $value nil) }}
+                <tr><td>{{ $key | humanize | title }}</td><td>{{ markdownify $value }}</td></tr>
+              {{ end }}
+              {{ end }}
+            {{ end }}
+          {{ end }}
+        {{ else }}
+          {{ range $key, $value :=  . }}
+          <tr><td>{{ $key | humanize | title }}</td><td>{{ markdownify $value }}</td></tr>
+          {{ end }}
+        {{ end }}
+        {{ end }}
+        </tbody>
+      </table>
+      {{ if eq .Params.complete false }}
+
+        <br/><div align="center"><b>Scholarly research and commentary to be published in {{ .Page.Params.pub_date }}.</b></div>
+        <!--FOR FULL DATE: Scholarly research and commentary to be published on {{ dateFormat "January 1, 2006" .Page.Params.pub_date }}.-->
+      {{ end }}
+    </div>
+  </section>

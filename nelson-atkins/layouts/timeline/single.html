@@ -1,0 +1,91 @@
+{{/*
+  Timeline layout. This layout describes a single-page template that has been
+  augmented with the ability to display a frontmatter-defined abstract (in
+  markdown format) as well as bibliography references.
+*/}}
+
+{{ define "main" }}
+
+{{ if isset $.Site.Params "imagedir" }}
+  {{ $.Scratch.Set "imageDir" $.Site.Params.imageDir }}
+{{ else }}
+  {{ $.Scratch.Set "imageDir" "" }}
+{{ end }}
+
+<article class="{{ partial "page-class.html" . }} quire-timeline" id="main" role="main">
+  {{ partial "page-header.html" . }}
+  {{ partial "page-tombstone.html" . }}
+  <section id="content" class="section quire-page__content">
+    {{ if .Params.abstract }}
+    {{/*  {{ partial "page-abstract.html" . }}  */}}
+    {{ end }}
+    <div class="container">
+      <div class="content">
+        <div class="nama-timeline"> <!--is-screen-only-->
+          <div class="nama-timeline__event nama-timeline__head kc">
+            <h2>Kansas City Events</h2>
+          </div>
+          <div class="nama-timeline__event nama-timeline__head nama">
+            <h2>Nelson-Atkins Events</h2>
+          </div>
+          {{ range sort $.Site.Data.events.eventList "startDate" }}
+            <div class="nama-timeline__event {{ .timeline }}">
+              {{ if .coverImage }}
+                {{ range where $.Site.Data.figures.figure_list "id" "eq" .coverImage }}
+                  <div class="nama-timeline__cover">
+                    <img src="{{ path.Join ($.Scratch.Get "imageDir") .src | relURL }}" />
+                  </div>
+                  {{ end }}
+                  {{ end }}
+                  <div class="nama-timeline__blurb">
+                    <h3 class="nama-timeline__date">{{ .startDate }}</h3>
+                    {{ if .date }}
+                      <p><b>{{ .date }}</b></p>
+                    {{ end }}
+                    <p>{{ .blurb | markdownify }}</p>
+                  </div>
+                  <div class="nama-timeline__expand is-screen-only">
+                    <i class="material-icons">play_arrow</i>
+                  </div>
+                  <div class="modal nama-timeline__modal">
+                    <div class="modal-background"></div>
+                    <div class="modal-card">
+                      <div class="modal-card-head nama-timeline__modal-head">
+                        {{ if .date }}
+                          {{ $.Scratch.Set "displayDate" .date }}
+                        {{ else }}
+                          {{ $.Scratch.Set "displayDate" .startDate }}
+                        {{ end }}
+                        <h2 class="modal-card-title">{{ $.Scratch.Get "displayDate" }} | {{ .blurb | markdownify }}</h2>
+                        <button class="nama-timeline__modal-close"><i class="material-icons">close</i></button>
+                      </div>
+                      <section class="modal-card-body">
+                        <div class="nama-timeline__modal-slider">
+                          {{ range (append (dict "id" .coverImage) .figure)}}
+                            {{ range where $.Site.Data.figures.figure_list "id" "eq" .id}}
+                              <div class="nama-timeline__modal-img">
+                                <img src="{{ path.Join ($.Scratch.Get "imageDir") .src | relURL }}" />
+                                <p>{{ .caption | markdownify }}</p>
+                              </div>
+                            {{ end}}
+                          {{ end }}
+                          <button class="prev"><i class="material-icons">arrow_back_ios</i></button>
+                          <button class="next"><i class="material-icons">arrow_forward_ios</i></button>
+                        </div>
+                      </section>
+                    </div>
+                    {{/*  <button class="modal-close is-large" aria-label="close"></button>  */}}
+                  </div>
+              </div>
+          {{ end }}
+        </div>
+
+
+        {{ .Content }}
+        {{ partial "page-bibliography.html" . }}
+      </div>
+      {{ partial "footer-buttons.html" . }}
+    </div>
+  </section>
+</article>
+{{ end }}

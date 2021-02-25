@@ -1,0 +1,35 @@
+{{/*
+  Complete title block for publication.
+*/}}
+<header class="quire-menu__header">
+  <button class="quire-navbar-button search-button"
+          aria-controls="quire-search"
+          onclick="toggleSearch()">
+    <span class="visually-hidden">Search</span>
+    <i class="remove-from-epub material-icons">
+      search
+    </i>
+  </button>
+  {{ if ne .Kind "home" -}}
+  <a class="quire-menu__header__title-link" href="{{ .Site.BaseURL }}">
+  {{- end }}
+  <h4 class="quire-menu__header__title">
+    <span class="visually-hidden">Site Title: </span>
+    {{- partial "site-title.html" . | markdownify -}}
+  </h4>
+  {{ if ne .Kind "home" -}}
+  </a>
+  {{- end }}
+  <div class="quire-menu__header__contributors">
+    {{- if .Site.Data.publication.contributor_as_it_appears -}}
+    {{ .Site.Data.publication.contributor_as_it_appears }}
+    {{ else }}
+    <span class="visually-hidden">Contributors: </span>
+    <i>by {{ partial "contributor-list.html" (dict "range" .Site.Data.publication.contributor "contributorType" "primary" "listType" "string" "Site" $.Site) }}</i>
+    {{- end }}
+  <hr>
+<ul>
+  <li>Paintings and pastels marked with a page icon (<i class="material-icons">description</i>) have been published with scholarly research.</li>
+</ul>
+  </div>
+</header>

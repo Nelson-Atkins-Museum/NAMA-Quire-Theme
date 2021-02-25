@@ -1,0 +1,646 @@
+// =============================================================================
+// nelson-atkins.scss
+// -----------------------------------------------------------------------------
+// Custom styling for the Nelson-Atkins theme
+
+// add borders to grouped images
+.q-fig-gr {
+  border-top: 1px solid #363636;
+  border-bottom: 1px solid #363636;
+  padding-top: 1.5em;
+}
+
+// remove arrows from chrome print style for dropdowns
+details summary::-webkit-details-marker {
+  @media print {
+  display: none;
+ }
+}
+
+.no-space {
+  line-height: 2;
+  margin-bottom: 1em;
+}
+
+#na-overlay {
+  position: fixed;
+  display: none;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,.7);
+  z-index: 9999;
+}
+
+#na-overlay-text{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+}
+
+#na-overlay-text-box {
+  width: 320px;
+  padding: 10px;
+  border: 5px #ffffff;
+  background-color: #ffffff;
+  margin: 0;
+  text-align: left;
+}
+
+div.na-resizer {
+    display: none;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    height: 50px;
+    position: fixed;
+    left: calc(56% - 25px);
+    top: calc(50vh - 25px);
+    z-index: 20;
+    width: 50px;
+    text-align: center;
+    border-radius: 15px;
+    transition: background 0.3s;
+
+    &.toggled {
+        @media screen and (min-width: $widescreen) {
+            display: inline;
+        }
+    }
+
+    &:hover {
+        background: rgba(46, 46, 46, 0.8);
+
+        span.na-tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+    }
+
+    img {
+        height: 50px;
+    }
+}
+
+// Custom image controls
+div.na-image-controls {
+    background: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    left: 10px;
+    top: 100px;
+    width: 30px;
+
+    // Styling for all controls
+    div.na-image-control {
+        margin: 5px auto;
+        width: 22px;
+        height: 22px;
+        background-size: contain;
+        z-index: 99;
+        cursor: pointer;
+
+        &:hover {
+            span.na-tooltip {
+                visibility: visible;
+                opacity: 1;
+            }
+        }
+    }
+
+    div.na-image-caption-toggle {
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAQAAABLCVATAAABhklEQVR4AWIYkQBAWT3A5gGEcRiv3cY2ithTMHuxMy+YGWu27cXOvFhtjMacVdsIf42T9/P94+cuz/leKz3V7a9Fc/7q9sSqVEWdY37Lld+OqS1Vs9ugQhm0uxTNOQBjXtumQ5Nm7XZ4bRzA+WKa54B/DqvOaq1xSA/geSHNNcBHdQX27x3gar4uBwAPii7/IeBA7pFGwRflga9x3nlrAiv3CYyozxadAb0aI3c+1+Zq0AvOZIsGwJ4AgyjGHjCQiZeDPyoCDkuLUeE3WB7xDXC/LCHugxsRdoLNSaJNoDPCb6AtwLi0rGgD3yKcAy0Bxs3OihYwG+EMaEoSNYGZCL+DtiRRG/geYRfYlCTaCLpyHf/dJNHdXMe/EvxJEv0GKyMs1w92lSqyC/Qrz/doG0p8tH3gdPZE642ATyV9I1/CNxJjX8kf233A3nwdrpT01X4EXCk01tOCn3+tw3oAT1PK0Rs7dGjOUY6WVk+3ChJRZd/FZgZQNPc/O/mNiG/QRoQlw0gEANn3rnDGpvSaAAAAAElFTkSuQmCC');
+        text-align: center;
+        transition: background-image .3s;
+
+        &.toggled {
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAQAAABLCVATAAAA90lEQVR4AeXWMQ4BQRSA4VHhRnbvsg2tbTiArQg93Mb2TkBCVAg6iO7XiOTxrJmXqHwH+JM3k8w895eIGTFjzY0La2YMiUMTFZqs0KxIqfhmEvYU2ZP4ZDr4yL5lJviaFGV6hOg5HXVC1fWbOqLJycjI0RyovofaRcdKhq79HtqaQtvXTA2NHE1Xk6E+Vn0ZmmI1laGFebS5DF3AdNhwlqGTOXTSRwsPLWQoN4dyGRqEh/Trj82hSIZKbEyhDSUn0TKFWu4VVQ7mZ0SiQaiG09ElRNd9xghf4x99RwoSdhTZkfh/2SlLNEtSyi4M0XOJuD6WiMj9ozs8hme+a/up+wAAAABJRU5ErkJggg==');
+        }
+    }
+
+    div.na-image-menu {
+        z-index: 99;
+
+        div.na-image-menu__icon {
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAQAAABLCVATAAAAu0lEQVR4Ae3RIQjCUBSF4SMiiFGwdzvrPYtVk70HYUltdovVam8me7TL06JFhJVfwQdaLu6OhcH2xRP+clQrtEgJ5BFIacnCEo+VLNzxuMmCU8VD36kJNSHbmXMZoYyEhKxI6MmIB0QTvTErEppKjPlYK2LrDe3isgEOtBXR4egJnejFpcuevn4w4Jo39GQom0jI8oWm+oPZv1DAI9ihBR5LMyQx50IeF1LJCHlVPxRwkYVFCSH7KZvq5AVXlgFmFvid5gAAAABJRU5ErkJggg==');
+        }
+
+        span.na-tooltip {
+            top: 10px;
+        }
+
+        div.na-image-menu__menu {
+            visibility: hidden;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            font-size: 0.85em;
+            position: relative;
+            padding: 3px 0px 3px 3px;
+            left: 30px;
+            top: -30px;
+            width: 25vw;
+
+            div.na-image-menu__menu-option {
+                cursor: pointer;
+                font-size: 1.3em;
+                border-bottom: 1px solid #484848;
+                margin-bottom: 5px;
+
+                &:hover {
+                    background: rgba(46, 46, 46, 0.8);
+                }
+            }
+
+            &.toggled {
+                visibility: visible;
+            }
+        }
+
+    }
+
+    div.na-dualview-toggle {
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAhCAYAAACxzQkrAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAABaAAAAWgBBFMbvwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAACLSURBVFiF7dghDoAwEETRWUICDstJsJwdy0mwODBdDKJpQoZiWDFfsWKbR1DF3N0RqOZvQFk4UFvMI4C98owFwHQ/rwDmyv0BwPYEOs3sqDnN3VM2pg/7fT6H+2QCsQRiCcQSiCUQSyCWQCyBWAKxBGIJxAoHKi+KXXlxe1H+Us2H/S4fTH8/SOFAF47nHUhFRnQnAAAAAElFTkSuQmCC');
+        background-size: contain;
+
+        &.toggled {
+            &.dualview-toggle-0 {
+                background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAhCAYAAACxzQkrAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAABaAAAAWgBBFMbvwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAB2SURBVFiF7dgxCoAwEETR2SBo55Fyf0/iEawcKyGkGQMBt5jfbbHhQaokSBKJKn8D+tKBlsnnHQDq4M4O4HyH2aA7Iq6RBZJbO6e7MoNUBqkMUhmkMkhlkMoglUEqg1QGqQxSpQPNfiiW/uH3obUdwr8fonSgB+JnEkuVfUU6AAAAAElFTkSuQmCC');
+            }
+
+            &.dualview-toggle-1 {
+                background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAhCAYAAACxzQkrAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAABaAAAAWgBBFMbvwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAB1SURBVFiF7dgxCoBADETRiQh6BE/i/T2SnTaO/VoMgYAp5nfbhLdstQmSRKOmvwFj7UDzcN4AnMkZB4C9hvMF3RFxZQaQfKowQMMnM0hlkMoglUEqg1QGqQxSGaQySGWQyiBVO9D4UVxIrskZpZcKbz9E7UAvnQ4TPHvcl4UAAAAASUVORK5CYII=');
+            }
+        }
+
+        @media screen and (max-width: $widescreen) {
+            display: none;
+        }
+    }
+}
+
+span.na-tooltip {
+    visibility: hidden;
+    width: 150px;
+    background-color: black;
+    border: 1px solid white;
+    color: #fff;
+    text-align: center;
+    font-size: 0.85em;
+    padding: 0px 0px;
+
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    left: 30px;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity ease-in 0.3s;
+    transition-delay: 0.8s;
+}
+
+span.fig span.material-fullscreen {
+  @media print {
+    visibility: hidden;
+  }
+}
+
+.quire-figure .q-figure__wrapper span.fig.nama-dualview-select {
+    cursor: pointer;
+    top: 30px;
+    @media print {
+      visibility: hidden;
+    }
+}
+
+div.quire-image-info {
+    &.hidden {
+        visibility: hidden;
+    }
+
+    span.quire-image-info__caption {
+        font-size: 1.3em;
+    }
+}
+
+.quire-entry .side-by-side div.quire-entry__image-wrap.dualview {
+    // visibility: hidden;
+
+    @media screen and (min-width: $widescreen) {
+
+        &.dualview-toggled {
+            width: 49vw;
+
+            div.quire-entry__image {
+                width: 49vw;
+                height: 75vh;
+
+                div.quire-entry__image__group-container figure {
+                    height: calc(80vh - 3rem);
+                }
+            }
+        }
+
+        &.hidden {
+            visibility: hidden;
+            width: 0px;
+        }
+    }
+
+    @media screen and (max-width: $widescreen) {
+        &[data-dualview="1"] {
+            display: none;
+        }
+    }
+
+
+}
+
+.quire-entry .side-by-side div.quire-entry__content.dualview {
+
+    &.dualview-toggled {
+        position: absolute;
+        top: 100vh;
+        width: 100vw;
+    }
+}
+
+.leaflet-control-attribution {
+    display: none;
+}
+
+/*
+Main Timeline Customizations
+*/
+
+/*div.timeline-fig-group {
+  border-width: 10px;
+  border-color: green;
+  border-style: solid;
+}*/
+
+.nama-timeline {
+
+
+    div.nama-timeline is-screen-only{
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: .75rem;
+      flex-wrap: wrap;
+    }
+
+    div.nama-timeline__img {
+
+    }
+
+    div.nama-timeline__head {
+
+        h2 {
+            color: white;
+            margin: 0;
+        }
+
+        &.nama {
+            text-align: right;
+            background-color: $nama-orange;
+        }
+
+        &.kc {
+            background-color: $accent-color;
+        }
+    }
+
+    div.nama-timeline__event {
+        margin: 1rem;
+        padding: 0.5rem;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        position: relative;
+        background: white;
+        // border-radius: 10px;
+        // width: 20vw;
+
+        @media screen and (max-width: $fullhd) {
+            flex-direction: column;
+            z-index: 1;
+            // width: 100%;
+        }
+
+        &.modal-active {
+            z-index: 2;
+        }
+
+        &.nama {
+            border: 3px solid $nama-orange;
+            border-left: none;
+            box-shadow: 0px 1px 1px $nama-orange;
+            left: 50.2%;
+
+            @media screen and (max-width: $fullhd) {
+                left: 0;
+                border-left: 3px solid $nama-orange;
+            }
+
+            div.nama-timeline__expand i {
+              color: $nama-orange;
+            }
+        }
+
+        &.kc {
+            border: 3px solid $accent-color;
+            border-right: none;
+            box-shadow: 0px 1px 1px $accent-color;
+            right: 50.2%;
+
+            @media screen and (max-width: $fullhd) {
+                right: 0;
+                border-right: 3px solid $accent-color;
+            }
+
+            div.nama-timeline__expand i {
+              color: $accent-color;
+            }
+
+        }
+
+        div.nama-timeline__blurb {
+            margin: 1rem;
+
+            h3.nama-timeline__date {
+                @media screen and (max-width: $fullhd) {
+                    text-align: center;
+                }
+            }
+        }
+
+        div.nama-timeline__cover {
+            img {
+                vertical-align: middle;
+                display: inline-block;
+                max-height: 150px;
+            }
+        }
+
+        div.nama-timeline__expand {
+            text-align: right;
+            vertical-align: bottom;
+            height: 100%;
+            justify-content: flex-end;
+            flex-grow: 1;
+
+            i {
+                cursor: pointer;
+                font-size: 3em;
+                transition: background-color 0.3s, color 0.3s;
+
+                &:hover {
+                    background-color: $accent-color;
+                    color: white;
+                    transition: background-color 0.3s, color 0.3s;
+                }
+            }
+            &.hidden {
+                display: none;
+            }
+        }
+
+        div.modal.nama-timeline__modal {
+
+            div.modal-card {
+
+                width: 80%;
+
+                @media screen and (max-width: $fullhd) {
+                    width: 100%;
+                }
+
+                section.modal-card-body {
+                    padding: 0;
+                    a {
+                        color: white;
+                        text-decoration: underline;
+                        &:hover {
+                            color: $nama-orange !important;
+                            border-bottom: none !important;
+                        }
+                    }
+                }
+
+
+                div.modal-card-head.nama-timeline__modal-head {
+                    background-color: $accent-color;
+                    border-bottom: none;
+
+                    h2 {
+                        color: white;
+                        width: 80%;
+                    }
+
+                    button {
+                        border: none;
+                        color: white;
+                        background-color: $accent-color;
+                        transition: all 0.3s ease;
+                        cursor: pointer;
+
+                        &:hover {
+                            color: $accent-color;
+                            background-color: white;
+                        }
+                    }
+                }
+
+                div.nama-timeline__modal-slider {
+
+                    div.nama-timeline__modal-img {
+                        display: none;
+                        background-color: black;
+
+                        &.active {
+                            display: block;
+                        }
+
+                        text-align: center;
+
+                        img {
+                            padding: 5px 0px;
+                            vertical-align: middle;
+                            max-height: 60vh;
+                            max-width: 80vw;
+                        }
+
+                        p {
+                            background: $accent-color;
+                            color: white;
+                            padding: 15px;
+                        }
+                    }
+
+                    .prev, .next {
+                        border: none;
+                        background-color: $accent-color;
+                        cursor: pointer;
+                        position: absolute;
+                        top: 50%;
+                        width: auto;
+                        margin-top: -22px;
+                        padding: 16px;
+                        color: white;
+                        font-weight: bold;
+                        font-size: 18px;
+                        transition: 0.3s ease;
+                        user-select: none;
+                        &.hidden {
+                            display: none;
+                        }
+                    }
+
+                    .prev {
+                        left: 0;
+                    }
+
+                    /* Position the "next button" to the right */
+                    .next {
+                        right: 0;
+                    }
+
+                    /* On hover, add a black background color with a little bit see-through */
+                    .prev:hover,
+                    .next:hover {
+                        background-color: white;
+                        color: $accent-color;
+                    }
+                }
+            }
+        }
+
+    }
+
+    &::after {
+      @media screen {
+        content: '';
+        position: absolute;
+        display: inline-block;
+        width: 6px;
+        background-color: $nama-orange;
+        top: 0;
+        // bottom: 0;
+        left: 52%;
+        height: 99%;
+        margin-left: -3px;
+        z-index: 0;
+      }
+
+        @media screen and (max-width: $fullhd) {
+            // top: 2%;
+            // height: 80%;
+        }
+    }
+
+    &::before {
+      @media screen {
+        content: '';
+        position: absolute;
+        display: inline-block;
+        width: 6px;
+        background-color: $nama-gray;
+        top: 0;
+        // bottom: 0;
+        left: 48%;
+        height: 99%;
+        margin-left: -3px;
+        z-index: 0;
+      }
+
+        @media screen and (max-width: $fullhd) {
+            // top: 0;
+            // height: 80%;
+        }
+    }
+
+}
+
+/*
+Section Timeline Customizations
+*/
+div.quire-contents-buttons.nama-section-timeline {
+
+    width: 100vw;
+    padding: 0px 10vw;
+    left: calc(-50vw + 50%);
+    position: relative;
+    margin-bottom: 20px;
+
+    h2 {
+        font-weight: 600;
+        font-size: 1.75em;
+    }
+
+    ul {
+        margin-top: 50px;
+        display: grid;
+        grid-template-columns: repeat(7, calc(100% / 7));
+        row-gap: 5px;
+
+        @media screen and (max-width: $fullhd) {
+            grid-template-columns: repeat(4, 25%);
+        }
+
+
+        @media screen and (max-width: $fullhd) {
+            grid-template-columns: repeat(2, 50%);
+        }
+
+        @media screen and (max-width: $tablet) {
+            grid-template-columns: repeat(1, 100%);
+        }
+
+        li.quire-nav-button {
+            width: 95%;
+            height: 80px;
+            vertical-align: middle;
+            position: relative;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+
+            a {
+                height: auto;
+                margin: 0;
+                padding: 0;
+            }
+
+            &:after {
+                position: absolute;
+                content: " ";
+                border: 3px solid $accent-color;
+                height: calc(100% * 2);
+                right: calc(-5%);
+                top: calc(50% * -1);
+            }
+
+            @media screen and (min-width: $fullhd) {
+                &:last-child {
+                    &:after {
+                        border: 0;
+                        content: none;
+                    }
+                }
+            }
+
+
+            @media screen and (max-width: $fullhd) {
+                &:after {
+                    content: none;
+                    border: 0;
+                }
+            }
+        }
+
+    }
+}

@@ -1,0 +1,63 @@
+{{/*
+
+  This wordcode adds a linked Author Date citation reference to the text, and a
+  hover pop-up with the definition citation text. It also adds the citation to a map
+  of termd works, which can then be output as a page-level bibliography on essay
+  and entry type pages. Example:
+
+  {{< q-term "Faure 1909" "54" >}}
+
+  The first positional parameter is a word form citation that should match one
+  in `definitions.yml`. The second, optional parameter is a page reference. The
+  above sample would output as: Faure 1909, 54.
+
+  A third optional parameter allows you to customize the text to appear in the
+  link if not the word form of the citation. The following sample would appear
+  simply as: 1909, 54.
+
+  {{< q-term "Faure 1909" "54" "1909" >}}
+
+  In using this third parameter, you still need to have the second parameter
+  even if it’s empty. The following sample would appear simply as: 1909.
+
+  {{< q-term "Faure 1909" "" "1909" >}}
+
+  The text element between the author date reference and the page can be changed
+  with the `citationPageLocationDivider` property in `config.yml`.
+
+*/}}
+
+{{- $errorMissingValue := dict "wordcode" "q-term" "message" "1, 2 or 3 values must be supplied with this wordcode. The first is required and should match a word reference in the project’s `definitions.yml` file, the second is optional, and should be a page number or range of page numbers, the third is optional and should be the text to appear in the link if not the definition word form of the reference" "example" "{{< q-term &#34;Faure 1909&#34; &#34;304&#34; &#34;1909&#34; >}}" -}}
+
+{{- $errorMissingReference := dict "wordcode" "q-term" "message" "The word reference supplied doesn’t match one in the project’s `references.yml` file" "example" "{{< q-term &#34;Faure 1909&#34; >}}<br /><br />word: &#34;Faure 1909&#34;" -}}
+
+{{- if gt (len .Params) 3 -}}
+
+  {{- partial "error-message.html" $errorMissingValue -}}
+
+{{- else -}}
+
+  {{- $word := .Get 0 -}}
+
+  {{- range $.Site.Data.definitions.entries -}}
+      {{- if eq .word $word -}}
+          {{- $.Scratch.Add "definition" .definition -}}
+      {{- end -}}
+  {{- end -}}
+
+  {{- if eq ($.Scratch.Get "definition") nil -}}
+
+    {{- partial "error-message.html" $errorMissingReference -}}
+
+  {{- else -}}
+
+    {{- $definition := $.Scratch.Get "definition" -}}
+    {{- $.Page.Scratch.SetInMap "entry" "0" $word -}}
+    {{- $.Page.Scratch.SetInMap "entry" "1" $definition -}}
+    {{- $entry := ($.Page.Scratch.GetSortedMapValues "entry") -}}
+    {{- $wordId := $word | urlize -}}
+    {{- $.Page.Scratch.SetInMap "termd" $wordId $entry -}}
+    <a href="#{{ $word | urlize }}n" id="{{ $word | urlize }}" class="quire-citation" >{{- if eq (len .Params) 3 }}{{- .Get 2 -}} {{ else }}{{- markdownify $word -}}{{ end }}{{- if eq (len .Params) 2 }}{{ $.Site.Params.citationPageLocationDivider }}{{ .Get 1 }}{{ end -}}<span class="quire-citation__content"><b>{{- markdownify $word -}}: </b>{{- markdownify $definition -}}</span></a>
+  {{- end -}}
+
+{{- end -}}

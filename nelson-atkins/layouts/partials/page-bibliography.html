@@ -1,0 +1,19 @@
+{{ if ($.Scratch.GetSortedMapValues "cited") }}
+<div class="quire-page__content__references backmatter">
+    <h2 id="bibliography">Notes</h2>
+    {{ if eq .Site.Params.displayBiblioShort true }}
+    <ol>
+        {{ range ($.Scratch.GetSortedMapValues "cited") }}
+        {{/* the id is in a span because Pandoc otherwise strips them out from dt and dd for EPUBs for some reason */}}
+        <li><span id="{{ urlize (index . 0) }}n"></span> {{ markdownify (index . 1)}}<a href="#{{ urlize (index . 0 ) }}" class="footnote-return">&#8617;</a></li>
+        {{ end }}
+    </ol>
+    {{ else }}
+    <ol>
+        {{ range ($.Scratch.GetSortedMapValues "cited") }}
+        <li id="{{ urlize (index . 0) }}n">{{ markdownify (index . 1)}}</li>
+        {{ end }}
+    </ol>
+    {{ end }}
+</div>
+{{ end }}

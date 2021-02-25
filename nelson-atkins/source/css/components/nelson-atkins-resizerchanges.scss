@@ -1,0 +1,224 @@
+// =============================================================================
+// nelson-atkins.scss
+// -----------------------------------------------------------------------------
+// Custom styling for the Nelson-Atkins theme
+
+div.na-resizer {
+    display: none;
+    position: fixed;
+    left: calc(56% - 25px);
+    top: 48px;
+    z-index: 20;
+    width: 40px;
+    height: 100%;
+    transition: background 0.3s;
+    cursor: ew-resize;
+
+    svg {
+        fill: findColorInvert($accent-color);
+        top: calc(50% - 20px);
+        width: 40px;
+        height: 40px;
+      }
+
+    p {
+      visibility: hidden;
+      width: 25px;
+      margin: auto;
+      margin-top: calc(50% - 25px);
+    }
+
+    img {
+      height: 50px;
+    }
+
+    &.toggled {
+        @media screen and (min-width: $widescreen) {
+            display: inline;
+        }
+    }
+
+    &:hover {
+        background: rgba(46, 46, 46, 0.8);
+
+        p {
+          visibility: visible;
+        }
+
+        span.na-tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+    }
+
+}
+
+// Custom image controls
+div.na-image-controls {
+    background: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    left: 10px;
+    top: 100px;
+    width: 30px;
+
+    // Styling for all controls
+    div.na-image-control {
+        margin: 5px auto;
+        width: 22px;
+        height: 22px;
+        background-size: contain;
+        z-index: 99;
+        cursor: pointer;
+
+        &:hover {
+            span.na-tooltip {
+                visibility: visible;
+                opacity: 1;
+            }
+        }
+    }
+
+    div.na-image-caption-toggle {
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAQAAABLCVATAAABhklEQVR4AWIYkQBAWT3A5gGEcRiv3cY2ithTMHuxMy+YGWu27cXOvFhtjMacVdsIf42T9/P94+cuz/leKz3V7a9Fc/7q9sSqVEWdY37Lld+OqS1Vs9ugQhm0uxTNOQBjXtumQ5Nm7XZ4bRzA+WKa54B/DqvOaq1xSA/geSHNNcBHdQX27x3gar4uBwAPii7/IeBA7pFGwRflga9x3nlrAiv3CYyozxadAb0aI3c+1+Zq0AvOZIsGwJ4AgyjGHjCQiZeDPyoCDkuLUeE3WB7xDXC/LCHugxsRdoLNSaJNoDPCb6AtwLi0rGgD3yKcAy0Bxs3OihYwG+EMaEoSNYGZCL+DtiRRG/geYRfYlCTaCLpyHf/dJNHdXMe/EvxJEv0GKyMs1w92lSqyC/Qrz/doG0p8tH3gdPZE642ATyV9I1/CNxJjX8kf233A3nwdrpT01X4EXCk01tOCn3+tw3oAT1PK0Rs7dGjOUY6WVk+3ChJRZd/FZgZQNPc/O/mNiG/QRoQlw0gEANn3rnDGpvSaAAAAAElFTkSuQmCC');
+        text-align: center;
+        transition: background-image .3s;
+
+        &.toggled {
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAQAAABLCVATAAAA90lEQVR4AeXWMQ4BQRSA4VHhRnbvsg2tbTiArQg93Mb2TkBCVAg6iO7XiOTxrJmXqHwH+JM3k8w895eIGTFjzY0La2YMiUMTFZqs0KxIqfhmEvYU2ZP4ZDr4yL5lJviaFGV6hOg5HXVC1fWbOqLJycjI0RyovofaRcdKhq79HtqaQtvXTA2NHE1Xk6E+Vn0ZmmI1laGFebS5DF3AdNhwlqGTOXTSRwsPLWQoN4dyGRqEh/Trj82hSIZKbEyhDSUn0TKFWu4VVQ7mZ0SiQaiG09ElRNd9xghf4x99RwoSdhTZkfh/2SlLNEtSyi4M0XOJuD6WiMj9ozs8hme+a/up+wAAAABJRU5ErkJggg==');
+        }
+    }
+
+    div.na-image-menu {
+        z-index: 99;
+
+        div.na-image-menu__icon {
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAQAAABLCVATAAAAu0lEQVR4Ae3RIQjCUBSF4SMiiFGwdzvrPYtVk70HYUltdovVam8me7TL06JFhJVfwQdaLu6OhcH2xRP+clQrtEgJ5BFIacnCEo+VLNzxuMmCU8VD36kJNSHbmXMZoYyEhKxI6MmIB0QTvTErEppKjPlYK2LrDe3isgEOtBXR4egJnejFpcuevn4w4Jo39GQom0jI8oWm+oPZv1DAI9ihBR5LMyQx50IeF1LJCHlVPxRwkYVFCSH7KZvq5AVXlgFmFvid5gAAAABJRU5ErkJggg==');
+        }
+
+        span.na-tooltip {
+            top: 10px;
+        }
+
+        div.na-image-menu__menu {
+            visibility: hidden;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            font-size: 0.85em;
+            position: relative;
+            padding: 3px 0px 3px 3px;
+            left: 30px;
+            top: -30px;
+            width: 25vw;
+
+            div.na-image-menu__menu-option {
+                cursor: pointer;
+                font-size: 1.3em;
+                border-bottom: 1px solid #484848;
+                margin-bottom: 5px;
+
+                &:hover {
+                    background: rgba(46, 46, 46, 0.8);
+                }
+            }
+
+            &.toggled {
+                visibility: visible;
+            }
+        }
+
+    }
+
+    /* For styling the dual-view toggle button on upper left of image viewer */
+    div.na-dualview-toggle {
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAhCAYAAACxzQkrAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAABaAAAAWgBBFMbvwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAACLSURBVFiF7dghDoAwEETRWUICDstJsJwdy0mwODBdDKJpQoZiWDFfsWKbR1DF3N0RqOZvQFk4UFvMI4C98owFwHQ/rwDmyv0BwPYEOs3sqDnN3VM2pg/7fT6H+2QCsQRiCcQSiCUQSyCWQCyBWAKxBGIJxAoHKi+KXXlxe1H+Us2H/S4fTH8/SOFAF47nHUhFRnQnAAAAAElFTkSuQmCC');
+        background-size: contain;
+        &.toggled {
+            &.dualview-toggle-0 {
+                background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAhCAYAAACxzQkrAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAABaAAAAWgBBFMbvwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAB2SURBVFiF7dgxCoAwEETR2SBo55Fyf0/iEawcKyGkGQMBt5jfbbHhQaokSBKJKn8D+tKBlsnnHQDq4M4O4HyH2aA7Iq6RBZJbO6e7MoNUBqkMUhmkMkhlkMoglUEqg1QGqQxSpQPNfiiW/uH3obUdwr8fonSgB+JnEkuVfUU6AAAAAElFTkSuQmCC');
+            }
+
+            &.dualview-toggle-1 {
+                background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAhCAYAAACxzQkrAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAABaAAAAWgBBFMbvwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAB1SURBVFiF7dgxCoBADETRiQh6BE/i/T2SnTaO/VoMgYAp5nfbhLdstQmSRKOmvwFj7UDzcN4AnMkZB4C9hvMF3RFxZQaQfKowQMMnM0hlkMoglUEqg1QGqQxSGaQySGWQyiBVO9D4UVxIrskZpZcKbz9E7UAvnQ4TPHvcl4UAAAAASUVORK5CYII=');
+            }
+        }
+        @media screen and (max-width: $widescreen) {
+                display: none;
+        }
+    }
+}
+
+span.na-tooltip {
+    visibility: hidden;
+    width: 150px;
+    background-color: black;
+    border: 1px solid white;
+    color: #fff;
+    text-align: center;
+    font-size: 0.85em;
+    padding: 0px 0px;
+
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    left: 30px;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity ease-in 0.3s;
+    transition-delay: 0.8s;
+}
+
+
+
+div.quire-image-info {
+    &.hidden {
+        visibility: hidden;
+    }
+    span.quire-image-info__caption {
+        font-size: 1.3em;
+    }
+}
+
+.quire-entry .side-by-side div.quire-entry__image-wrap.dualview {
+    // visibility: hidden;
+
+    @media screen and (min-width: $widescreen) {
+
+        &.dualview-toggled {
+            width: 49vw;
+
+            div.quire-entry__image {
+                width: 49vw;
+                height: 75vh;
+
+                div.quire-entry__image__group-container figure {
+                    height: calc(80vh - 3rem);
+                }
+            }
+        }
+
+        &.hidden {
+            visibility: hidden;
+            width: 0px;
+        }
+    }
+
+    @media screen and (max-width: $widescreen) {
+        &[data-dualview="1"] {
+            display: none;
+        }
+    }
+
+
+}
+
+.quire-entry .side-by-side div.quire-entry__content.dualview {
+
+    &.dualview-toggled {
+        position: absolute;
+        top: 100vh;
+        width: 100vw;
+    }
+}
+
+.leaflet-control-attribution {
+    display: none;
+}
